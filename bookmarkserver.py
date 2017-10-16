@@ -23,6 +23,11 @@ form = '''<!DOCTYPE html>
 {}
 </pre>
 '''
+class Shortener(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+
+    def do_POST(self):
+
 
 if __name__ == '__main__':
     server_address = ('', 8000)
