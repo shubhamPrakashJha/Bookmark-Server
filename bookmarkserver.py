@@ -94,5 +94,7 @@ class Shortener(http.server.BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     server_address = ('', 5000)
+    #create http.server instance
     httpd = http.server.HTTPServer(server_address, Shortener)
+    #run httpd server
     httpd.serve_forever()
