@@ -38,27 +38,33 @@ class Shortener(http.server.BaseHTTPRequestHandler):
 
         if name:
             if name in memory:
+                # redirect to longuri associated to name
                 self.send_response(303)
                 self.send_header('Location', memory[name])
                 self.end_headers()
             else:
+                # if name not in dict, send 404 error
                 self.send_response(404)
                 self.send_header('Content-type', 'text/plain; charset=utf-8')
                 self.end_headers()
                 self.wfile.write("I don't know '{}'.".format(name).encode())
         else:
+            #send the form
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
+            # show list associated with name in the form
             known = "\n".join("{} : {}".format(key, memory[key])
                               for key in sorted(memory.keys()))
             self.wfile.write(form.format(known).encode())
 
     def do_POST(self):
+        #decode form request body
         length = int(self.headers.get('Content-length', 0))
         body = self.rfile.read(length).decode()
         params = parse_qs(body)
 
+        # check that user fills all field before submitting
         if "longuri" not in params or "shortname" not in params:
             self.send_response(400)
             self.send_header('Content-type', 'text/plain; charset=utf-8')
@@ -70,12 +76,15 @@ class Shortener(http.server.BaseHTTPRequestHandler):
         shortname = params["shortname"][0]
 
         if CheckURI(longuri):
+            # if URI is valid!  store it under the specified name.
             memory[shortname] = longuri
 
+            # redirect again to the form
             self.send_response(303)
             self.send_header('Location', '/')
             self.end_headers()
         else:
+            # if URI is not valid. send 404 error
             self.send_response(404)
             self.send_header('Content-type', 'text/plain; charset=utf-8')
             self.end_headers()
@@ -84,6 +93,6 @@ class Shortener(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    server_address = ('', 8000)
+    server_address = ('', 5000)
     httpd = http.server.HTTPServer(server_address, Shortener)
     httpd.serve_forever()
