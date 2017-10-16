@@ -14,7 +14,7 @@ between short names and long URIs, checking that each new URI added to the
    checks that the URI is valid (by requesting it), and if so, stores the
   mapping from shortname to longuri in its dictionary.  The server then
    redirects back to the root path.
-  * A GET request whose path contains a short name.  
+  * A GET request whose path contains a short name.   
   >The server looks up
     that short name in its dictionary and redirects to the corresponding
-    long URI.
+    long URI. ex: (/short_name)
