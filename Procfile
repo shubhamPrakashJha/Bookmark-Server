@@ -1,1 +1,1 @@
-web: python bookmarkServer.py
+web: python bookmarkserver.py
