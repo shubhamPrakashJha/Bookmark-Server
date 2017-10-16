@@ -93,6 +93,9 @@ class Shortener(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
+    # Use PORT if it's there
+    port = int(os.environ.get('PORT', 8000))
+    # Server address
     server_address = ('', 5000)
     #create http.server instance
     httpd = http.server.HTTPServer(server_address, Shortener)
