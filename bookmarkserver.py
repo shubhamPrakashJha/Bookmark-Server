@@ -23,6 +23,15 @@ form = '''<!DOCTYPE html>
 {}
 </pre>
 '''
+
+def CheckURI(uri, timeout=5):
+    try:
+        r = requests.get(uri, timeout=timeout)
+        return r.status_code == 200
+    except requests.RequestException:
+        return False
+
+
 class Shortener(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         name = unquote(self.path[1:])
