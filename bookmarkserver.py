@@ -96,7 +96,7 @@ if __name__ == '__main__':
     # Use PORT if it's there
     port = int(os.environ.get('PORT', 8000))
     # Server address
-    server_address = ('', 5000)
+    server_address = ('', port)
     #create http.server instance
     httpd = http.server.HTTPServer(server_address, Shortener)
     #run httpd server
