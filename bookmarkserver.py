@@ -46,6 +46,32 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             self.wfile.write(form.format(known).encode())
 
     def do_POST(self):
+        length = int(self.headers.get('Content-length', 0))
+        body = self.rfile.read(length).decode()
+        params = parse_qs(body)
+
+        if "longuri" not in params or "shortname" not in params:
+            self.send_response(400)
+            self.send_header('Content-type', 'text/plain; charset=utf-8')
+            self.end_headers()
+            self.wfile.write("Missing form fields!".encode())
+            return
+
+        longuri = params["longuri"][0]
+        shortname = params["shortname"][0]
+
+        if CheckURI(longuri):
+            memory[shortname] = longuri
+
+            self.send_response(303)
+            self.send_header('Location', '/')
+            self.end_headers()
+        else:
+            self.send_response(404)
+            self.send_header('Content-type', 'text/plain; charset=utf-8')
+            self.end_headers()
+            self.wfile.write(
+                "Couldn't fetch URI '{}'. Sorry!".format(longuri).encode())
 
 
 if __name__ == '__main__':
